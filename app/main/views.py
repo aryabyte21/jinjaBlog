@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from flask_sqlalchemy import get_debug_queries
 from . import main
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm,\
-    CommentForm
+    CommentForm, SearchForm
 from .. import db
 from ..models import Permission, Role, User, Post, Comment
 from ..decorators import admin_required, permission_required
@@ -275,3 +275,23 @@ def moderate_disable(id):
     db.session.commit()
     return redirect(url_for('.moderate',
                             page=request.args.get('page', 1, type=int)))
+
+# @main.route('/search')
+# @login_required
+# def search():
+#   search_term = request.args.get('search')
+#   page = request.args.get('page', 1, type=int)
+#   per_page = request.args.get('per_page', 10, type=int)
+#   # Search the database for users matching the search term and paginate the results
+#   results = User.query.filter(User.name.like(f'%{search_term}%')).paginate(page=page, per_page=per_page, error_out=False, max_per_page=100)
+#   return render_template('search.html', results=results)
+
+@main.route('/search', methods=['GET', 'POST'])
+def search():
+  form = SearchForm()
+  if form.validate_on_submit():
+    search_term = form.search.data
+    # Search the database for users matching the search term
+    results = User.query.filter(User.name.like(f'%{search_term}%')).all()
+    return render_template('search.html', form=form, results=results)
+  return render_template('search.html', form=form)
