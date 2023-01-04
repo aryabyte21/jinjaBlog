@@ -1,0 +1,206 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "API"
+  description: "API for interacting with the bloglite app"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    name: "API Support"
+    email: "aryaabyte@gmail.com"
+    url: "http://www.example.com/support"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:5000"
+basePath: "/api"
+schemes:
+  - "http"
+  - "https"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+securityDefinitions:
+  token:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+security:
+  - token: []
+paths:
+  /comments/:
+    get:
+      tags:
+        - "comments"
+      summary: "Get comments"
+      description: "Returns a list of comments"
+      operationId: "getComments"
+      parameters:
+        - name: "page"
+          in: "query"
+          required: false
+          type: "integer"
+          format: "int32"
+          default: 1
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Comment"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /comments/{id}:
+    get:
+      tags:
+        - "comments"
+      summary: "Get comment"
+      description: "Returns a single comment"
+      operationId: "getComment"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int32"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Comment"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /posts/{id}/comments/:
+    get:
+      tags:
+        - "comments"
+      summary: "Get comments for a post"
+      description: "Returns a list of comments for a specific post"
+      operationId: "getPostComments"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int32"
+        - name: "page"
+          in: "query"
+          required: false
+          type: "integer"
+          format: "int32"
+          default: 1
+      responses:
+        200:
+          description: "Success"
+         
+  /posts/:
+    get:
+      tags:
+        - "posts"
+      summary: "Get posts"
+      description: "Returns a list of posts"
+      operationId: "getPosts"
+      parameters:
+        - name: "page"
+          in: "query"
+          required: false
+          type: "integer"
+          format: "int32"
+          default: 1
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Post"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /posts/{id}:
+    get:
+      tags:
+        - "posts"
+      summary: "Get post"
+      description: "Returns a single post"
+      operationId: "getPost"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int32"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Post"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /users/:
+    get:
+      tags:
+        - "users"
+      summary: "Get users"
+      description: "Returns a list of users"
+      operationId: "getUsers"
+      parameters:
+        - name: "page"
+          in: "query"
+          required: false
+          type: "integer"
+          format: "int32"
+          default: 1
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /users/{id}:
+    get:
+      tags:
+        - "users"
+      summary: "Get user"
+      description: "Returns a single user"
+      operationId: "getUser"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int32"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/User"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
